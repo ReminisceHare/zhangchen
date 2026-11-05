@@ -1,0 +1,1410 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>每日巡查问题月度汇总台账</title>
+<style>
+    * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: "Microsoft Yahei", "PingFang SC", system-ui, sans-serif;
+    }
+    :root {
+        --red: #e50914;
+        --yellow: #ffd400;
+        --blue: #0057e7;
+        --black: #111111;
+        --white: #fbf8f3;
+        --line: 3px;
+    }
+    body {
+        min-height: 100vh;
+        padding: 28px;
+        background: var(--white);
+        color: var(--black);
+        border-left: 12px solid var(--red);
+        border-right: 12px solid var(--blue);
+        animation: bodyIn 0.6s ease-out;
+    }
+    @keyframes bodyIn {
+        from {
+            opacity: 0;
+            transform: translateX(-8px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    .container {
+        max-width: 1240px;
+        margin: 0 auto;
+        background: var(--white);
+        border: var(--line) solid var(--black);
+        box-shadow: 10px 10px 0 var(--black);
+        padding: 28px;
+        animation: cardIn 0.55s ease-out;
+    }
+    @keyframes cardIn {
+        from {
+            opacity: 0;
+            transform: translateY(14px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    .header {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        border-bottom: var(--line) solid var(--black);
+        padding-bottom: 14px;
+        margin-bottom: 18px;
+    }
+    .header-left {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+    }
+    .logo-mark {
+        width: 22px;
+        height: 22px;
+        background: var(--red);
+        border: var(--line) solid var(--black);
+        transform: rotate(45deg);
+        animation: markIn 0.6s ease-out;
+    }
+    @keyframes markIn {
+        from {
+            transform: rotate(0) scale(0.6);
+        }
+        to {
+            transform: rotate(45deg) scale(1);
+        }
+    }
+    .sub-header-line {
+        display: flex;
+        align-items: center;
+        gap:14px;
+        font-size:13px;
+        font-weight:700;
+        margin-bottom:14px;
+        letter-spacing:1px;
+    }
+    .yellow-mark {
+        width:22px;
+        height:22px;
+        background:var(--yellow);
+        border:var(--line) solid var(--black);
+        animation: yellowMarkIn 0.65s ease-out;
+    }
+    @keyframes yellowMarkIn {
+        from {
+            transform: scale(0.6);
+            opacity:0;
+        }
+        to {
+            transform: scale(1);
+            opacity:1;
+        }
+    }
+    h2 {
+        font-size: 24px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        color: var(--black);
+    }
+    .tip {
+        font-size: 13px;
+        color: var(--black);
+        background: var(--yellow);
+        border: var(--line) solid var(--black);
+        padding: 6px 10px;
+        box-shadow: 4px 4px 0 var(--black);
+        margin-left: 10px;
+    }
+    .last-file-tip {
+        background: var(--blue);
+        color: #fff;
+        border: var(--line) solid var(--black);
+        padding: 10px 14px;
+        font-size: 13px;
+        font-weight: 700;
+        margin-bottom: 16px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        box-shadow: 6px 6px 0 var(--black);
+        animation: slideIn 0.5s ease-out;
+    }
+    @keyframes slideIn {
+        from {
+            opacity: 0;
+            transform: translateX(-10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0);
+        }
+    }
+    .dot-red {
+        width: 14px;
+        height: 14px;
+        background: var(--red);
+        border: var(--line) solid var(--black);
+    }
+    textarea {
+        width: 100%;
+        min-height: 140px;
+        padding: 14px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        font-size: 14px;
+        line-height: 1.6;
+        outline: none;
+        box-shadow: 6px 6px 0 var(--black);
+        transition: box-shadow 0.22s ease, transform 0.22s ease;
+        resize: vertical;
+    }
+    textarea:focus {
+        box-shadow: 10px 10px 0 var(--black);
+        transform: translate(-2px, -2px);
+    }
+    .btn-group {
+        margin: 18px 0;
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    button {
+        padding: 11px 18px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        color: var(--black);
+        font-size: 14px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        cursor: pointer;
+        box-shadow: 5px 5px 0 var(--black);
+        transition: all 0.18s ease;
+        position: relative;
+        overflow: hidden;
+    }
+    button::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        background: var(--yellow);
+        transform: translateY(100%);
+        transition: transform 0.22s ease;
+        z-index: -1;
+    }
+    button:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0 var(--black);
+    }
+    button:hover::before {
+        transform: translateY(0);
+    }
+    button:active {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--black);
+    }
+    button.primary {
+        background: var(--red);
+        color: #fff;
+    }
+    button.primary::before {
+        background: var(--yellow);
+    }
+    button.primary:hover {
+        color: var(--black);
+    }
+    button.success {
+        background: var(--blue);
+        color: #fff;
+    }
+    button.success::before {
+        background: var(--yellow);
+    }
+    button.success:hover {
+        color: var(--black);
+    }
+    button.warning {
+        background: var(--yellow);
+    }
+    button.warning::before {
+        background: var(--red);
+    }
+    button.warning:hover {
+        color: #fff;
+    }
+    button.danger {
+        background: var(--white);
+    }
+    button.danger::before {
+        background: var(--red);
+    }
+    button.danger:hover {
+        color: #fff;
+    }
+    button.info {
+        background: var(--white);
+    }
+    button.info::before {
+        background: var(--blue);
+    }
+    button.info:hover {
+        color: #fff;
+    }
+    .search-area {
+        margin: 14px 0;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    input[type="text"],
+    select {
+        padding: 10px 12px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        font-size: 14px;
+        outline: none;
+        box-shadow: 4px 4px 0 var(--black);
+        transition: box-shadow 0.2s ease, transform 0.2s ease;
+    }
+    input:focus,
+    select:focus {
+        box-shadow: 7px 7px 0 var(--black);
+        transform: translate(-2px, -2px);
+    }
+    table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 18px;
+        font-size: 14px;
+        border: var(--line) solid var(--black);
+        box-shadow: 8px 8px 0 var(--black);
+        animation: tableIn 0.6s ease-out;
+    }
+    @keyframes tableIn {
+        from {
+            opacity: 0;
+            transform: translateY(10px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    th,
+    td {
+        padding: 12px;
+        text-align: center;
+        border-bottom: var(--line) solid var(--black);
+        border-right: var(--line) solid var(--black);
+    }
+    th {
+        background: var(--black);
+        color: var(--white);
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+    td.left {
+        text-align: left;
+    }
+    tbody tr {
+        transition: background 0.2s ease, transform 0.2s ease;
+    }
+    tbody tr:nth-child(even) {
+        background: #fffbe6;
+    }
+    tbody tr:hover {
+        background: var(--yellow);
+        transform: translateX(3px);
+    }
+    tbody tr:last-child td {
+        border-bottom: none;
+    }
+    .modal-mask {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.55);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 99;
+        animation: maskIn 0.2s ease-out;
+    }
+    @keyframes maskIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .modal {
+        background: var(--white);
+        border: var(--line) solid var(--black);
+        box-shadow: 14px 14px 0 var(--black);
+        padding: 24px;
+        min-width: 520px;
+        max-width: 92vw;
+        max-height: 86vh;
+        overflow-y: auto;
+        animation: modalIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+    }
+    @keyframes modalIn {
+        from {
+            opacity: 0;
+            transform: translateY(20px) scale(0.96);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+        }
+    }
+    .modal h3 {
+        font-size: 18px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        border-bottom: var(--line) solid var(--black);
+        padding-bottom: 10px;
+        margin-bottom: 14px;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .modal h3::before {
+        content: "";
+        width: 16px;
+        height: 16px;
+        background: var(--blue);
+        border: var(--line) solid var(--black);
+    }
+    .modal-row {
+        margin: 12px 0;
+    }
+    .modal-row label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 800;
+        font-size: 13px;
+        letter-spacing: 1px;
+    }
+    #fileAppend,
+    #fileImport,
+    #cfgImport {
+        display: none;
+    }
+    .cfg-block {
+        border: var(--line) solid var(--black);
+        padding: 14px;
+        margin: 10px 0;
+        background: var(--white);
+        box-shadow: 6px 6px 0 var(--black);
+        transition: all 0.2s ease;
+    }
+    .cfg-block:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 9px 9px 0 var(--black);
+    }
+    .cfg-block h4 {
+        font-size: 14px;
+        font-weight: 800;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+    .cfg-block h4::before {
+        content: "";
+        width: 12px;
+        height: 12px;
+        background: var(--red);
+        border: var(--line) solid var(--black);
+    }
+    .tag {
+        display: inline-block;
+        background: var(--yellow);
+        border: var(--line) solid var(--black);
+        padding: 3px 8px;
+        font-size: 12px;
+        font-weight: 800;
+        margin: 2px;
+    }
+    .preview-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 12px 0;
+        border: var(--line) solid var(--black);
+        box-shadow: 6px 6px 0 var(--black);
+    }
+    .preview-table th,
+    .preview-table td {
+        border-bottom: var(--line) solid var(--black);
+        border-right: var(--line) solid var(--black);
+        padding: 8px;
+        font-size: 13px;
+    }
+    .preview-table th {
+        background: var(--black);
+        color: var(--white);
+    }
+    .preview-table select,
+    .preview-table input[type="text"] {
+        padding: 6px 8px;
+        font-size: 13px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        outline: none;
+        box-shadow: 3px 3px 0 var(--black);
+        width: 100%;
+        min-width: 110px;
+    }
+    .preview-table textarea {
+        width: 100%;
+        min-height: 78px;
+        padding: 8px 10px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        font-size: 13px;
+        line-height: 1.5;
+        outline: none;
+        box-shadow: 4px 4px 0 var(--black);
+        resize: vertical;
+    }
+    .sub-item {
+        padding: 10px;
+        border: var(--line) solid var(--black);
+        margin: 8px 0;
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        background: var(--white);
+        box-shadow: 5px 5px 0 var(--black);
+        transition: all 0.2s ease;
+    }
+    .sub-item:hover {
+        transform: translate(-2px, -2px);
+        box-shadow: 7px 7px 0 var(--black);
+    }
+    hr {
+        border: none;
+        border-top: var(--line) solid var(--black);
+        margin: 14px 0;
+    }
+    .btn-mini {
+        padding: 6px 10px;
+        font-size: 12px;
+        border: var(--line) solid var(--black);
+        background: var(--white);
+        font-weight: 800;
+        cursor: pointer;
+        box-shadow: 3px 3px 0 var(--black);
+        transition: all 0.18s ease;
+    }
+    .btn-mini:hover {
+        transform: translate(-1px, -1px);
+        box-shadow: 4px 4px 0 var(--black);
+    }
+    .btn-mini:active {
+        transform: translate(1px, 1px);
+        box-shadow: 1px 1px 0 var(--black);
+    }
+    .btn-mini.danger {
+        background: var(--red);
+        color: #fff;
+    }
+    .row-line {
+        height: var(--line);
+        background: var(--black);
+        margin: 10px 0;
+    }
+    .color-bar {
+        height: 10px;
+        background: linear-gradient(90deg, var(--red) 0, var(--red) 33%, var(--yellow) 33%, var(--yellow) 66%, var(--blue) 66%);
+        border: var(--line) solid var(--black);
+        border-bottom: none;
+    }
+</style>
+</head>
+<body>
+
+<div class="container">
+    <div class="color-bar"></div>
+
+    <div class="header">
+        <div class="header-left">
+            <div class="logo-mark"></div>
+            <h2>每日巡查问题月度汇总台账</h2>
+        </div>
+        <span class="tip">FORM = FUNCTION</span>
+    </div>
+
+    <div class="sub-header-line">
+        <div class="yellow-mark"></div>
+        <span>离离原上草·一岁一枯荣·野火烧不尽·春风吹又生</span>
+    </div>
+
+    <div class="last-file-tip">
+        <span class="dot-red"></span>
+        <span id="lastExportTip">上次导出：暂无</span>
+    </div>
+
+    <textarea id="inputText" placeholder="粘贴问题，一行一条..."></textarea>
+
+    <div class="btn-group">
+        <button class="primary" onclick="openPreview()">识别</button>
+        <input type="file" id="fileAppend" accept=".xlsx">
+        <button class="success" onclick="exportXlsx()">导出</button>
+        <button onclick="document.getElementById('fileImport').click()">恢复</button>
+        <button class="warning" onclick="openCfgModal()">配置</button>
+        <button class="danger" onclick="clearAll()">清空</button>
+        <input type="file" id="fileImport" accept=".xlsx">
+    </div>
+
+    <div class="search-area">
+        <span style="font-weight:800;letter-spacing:1px;">搜索：</span>
+        <input type="text" id="searchVal" placeholder="搜索问题描述 / 板块 / 负责人" oninput="renderTable()">
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>序号</th>
+                <th>时间</th>
+                <th>问题板块</th>
+                <th>问题重点项</th>
+                <th>问题描述</th>
+                <th>负责人</th>
+                <th>操作</th>
+            </tr>
+        </thead>
+        <tbody id="tableBody"></tbody>
+    </table>
+</div>
+
+<!-- 编辑弹窗 -->
+<div class="modal-mask" id="editMask">
+    <div class="modal">
+        <h3>编辑记录</h3>
+        <div class="modal-row">
+            <label>时间（如 10.8）</label>
+            <input type="text" id="eTime">
+        </div>
+        <div class="modal-row">
+            <label>问题板块</label>
+            <select id="ePlate" onchange="editPlateChange()"></select>
+        </div>
+        <div class="modal-row">
+            <label>问题重点项</label>
+            <select id="eItem"></select>
+        </div>
+        <div class="modal-row">
+            <label>问题描述</label>
+            <textarea id="eDesc" rows="4" style="width:100%;border:var(--line) solid var(--black);padding:10px;outline:none;box-shadow:4px 4px 0 var(--black);"></textarea>
+        </div>
+        <div class="modal-row">
+            <label>负责人</label>
+            <select id="eOwner"></select>
+        </div>
+        <div class="btn-group">
+            <button class="primary" onclick="saveEdit()">保存</button>
+            <button class="info" onclick="closeEditMask()">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 识别预览弹窗 -->
+<div class="modal-mask" id="previewMask">
+    <div class="modal" style="width:92%;max-width:1100px;">
+        <h3>识别预览</h3>
+        <table class="preview-table">
+            <thead>
+                <tr>
+                    <th>时间</th>
+                    <th>问题板块</th>
+                    <th>问题重点项</th>
+                    <th>问题描述</th>
+                    <th>负责人</th>
+                    <th>操作</th>
+                </tr>
+            </thead>
+            <tbody id="previewBody"></tbody>
+        </table>
+        <div class="btn-group">
+            <button class="primary" onclick="confirmPreviewAdd()">确认添加</button>
+            <button class="info" onclick="closePreviewMask()">取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- 配置面板弹窗 -->
+<div class="modal-mask" id="cfgMask">
+    <div class="modal" style="width:780px;">
+        <h3>全局配置管理</h3>
+        <div class="btn-group">
+            <button class="info" onclick="exportCfg()">导出配置</button>
+            <button class="info" onclick="document.getElementById('cfgImport').click()">导入配置</button>
+            <input type="file" id="cfgImport" accept=".json">
+        </div>
+
+        <div class="cfg-block">
+            <h4>板块配置</h4>
+            <div id="plateListWrap"></div>
+
+            <hr>
+
+            <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;">新增板块</h4>
+            <div class="modal-row">
+                <label>板块名称</label>
+                <input type="text" id="newPlateName">
+            </div>
+            <div class="modal-row">
+                <label>板块识别关键词（逗号分隔）</label>
+                <input type="text" id="newPlateKw">
+            </div>
+            <div class="modal-row">
+                <label>优先级（数字越小优先级越高）</label>
+                <input type="number" id="newPlatePri" value="10">
+            </div>
+            <div class="modal-row">
+                <label>负责人列表（逗号分隔）</label>
+                <input type="text" id="newPlateOwners">
+            </div>
+            <div class="modal-row">
+                <label>默认负责人</label>
+                <input type="text" id="newPlateDefOwner">
+            </div>
+            <button class="primary" onclick="addPlate()">新增板块</button>
+        </div>
+
+        <div class="btn-group">
+            <button class="info" onclick="closeCfgMask()">关闭</button>
+        </div>
+    </div>
+</div>
+
+<!-- 板块编辑弹窗 -->
+<div class="modal-mask" id="editPlateMask">
+    <div class="modal" style="width:740px;">
+        <h3>编辑板块</h3>
+        <div class="modal-row">
+            <label>板块名称</label>
+            <input type="text" id="epName">
+        </div>
+        <div class="modal-row">
+            <label>板块关键词（逗号分隔）</label>
+            <input type="text" id="epKw">
+        </div>
+        <div class="modal-row">
+            <label>优先级</label>
+            <input type="number" id="epPri">
+        </div>
+        <div class="modal-row">
+            <label>负责人列表（逗号分隔）</label>
+            <input type="text" id="epOwners">
+        </div>
+        <div class="modal-row">
+            <label>默认负责人</label>
+            <input type="text" id="epDefOwner">
+        </div>
+
+        <div class="modal-row">
+            <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;">板块下属重点项</h4>
+            <div id="epItemWrap"></div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                <input type="text" id="epNewItemName" placeholder="重点项名称">
+                <input type="text" id="epNewItemKw" placeholder="关键词，逗号分隔">
+                <button onclick="addPlateInnerItem()">添加重点项</button>
+            </div>
+        </div>
+
+        <div class="modal-row">
+            <h4 style="font-size:14px;font-weight:800;letter-spacing:1px;">楼层负责人映射</h4>
+            <div id="epFloorOwnerWrap"></div>
+            <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap;">
+                <input type="text" id="epNewFloorKw" placeholder="楼层关键字，逗号分隔">
+                <input type="text" id="epNewFloorOwner" placeholder="对应负责人">
+                <button onclick="addPlateFloorMap()">添加楼层映射</button>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button class="primary" onclick="saveEditPlate()">保存板块</button>
+            <button class="info" onclick="closeEditPlateMask()">取消</button>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+<script>
+const STORAGE_KEY = "inspect_archive_data";
+const CFG_STORAGE_KEY = "inspect_archive_cfg";
+const LAST_EXPORT_TIME_KEY = "inspect_last_export_time";
+
+let recordList = [];
+let editIdx = null;
+let previewTempList = [];
+let currentEditPlateIdx = null;
+
+let cfg = {
+    plates: [
+        {
+            name: "工程",
+            kw: ["维修", "设施", "门器", "钟表", "草皮", "窗帘", "门屏", "地板", "筒灯"],
+            priority: 1,
+            items: [
+                { name: "设施故障", kw: ["维修", "故障", "松动", "没电", "异常", "塌陷", "缺胶", "检修", "不亮"] }
+            ],
+            owners: ["叶阔"],
+            defOwner: "叶阔",
+            floorOwnerMap: []
+        },
+        {
+            name: "环境",
+            kw: ["清洁", "清理", "垃圾"],
+            priority: 2,
+            items: [
+                { name: "日常清洁", kw: ["清理", "垃圾", "清扫"] }
+            ],
+            owners: ["曾虎成", "董心"],
+            defOwner: "曾虎成",
+            floorOwnerMap: [
+                { floorKw: ["B12"], owner: "董心" }
+            ]
+        },
+        {
+            name: "安全",
+            kw: ["安全", "灭火器", "饮水机", "锂电池", "照明", "地垫"],
+            priority: 3,
+            items: [
+                { name: "现场环境", kw: ["未关闭", "需整理", "缺失", "需安装", "废弃"] },
+                { name: "物资补充", kw: ["更换", "补货", "添加", "需补", "没墨"] }
+            ],
+            owners: ["张坤"],
+            defOwner: "张坤",
+            floorOwnerMap: []
+        },
+        {
+            name: "客服",
+            kw: ["白板笔", "洗发乳", "补货"],
+            priority: 4,
+            items: [
+                { name: "物资补充", kw: ["更换", "补货", "添加", "需补"] }
+            ],
+            owners: ["廖媛欣", "廖媛馨"],
+            defOwner: "廖媛欣",
+            floorOwnerMap: [
+                { floorKw: ["B12"], owner: "廖媛馨" }
+            ]
+        }
+    ]
+};
+
+function init() {
+    const recLocal = localStorage.getItem(STORAGE_KEY);
+    if (recLocal) recordList = JSON.parse(recLocal);
+
+    const cfgLocal = localStorage.getItem(CFG_STORAGE_KEY);
+    if (cfgLocal) cfg = JSON.parse(cfgLocal);
+
+    const lastExport = localStorage.getItem(LAST_EXPORT_TIME_KEY);
+    document.getElementById("lastExportTip").innerText = lastExport ? ("上次导出：" + lastExport) : "上次导出：暂无";
+
+    renderTable();
+}
+
+function saveRecLocal() {
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(recordList));
+}
+
+function saveCfgLocal() {
+    localStorage.setItem(CFG_STORAGE_KEY, JSON.stringify(cfg));
+}
+
+function openCfgModal() {
+    renderCfgPanel();
+    document.getElementById("cfgMask").style.display = "flex";
+}
+
+function closeCfgMask() {
+    document.getElementById("cfgMask").style.display = "none";
+}
+
+function detectPlate(text) {
+    const list = [...cfg.plates].sort((a, b) => a.priority - b.priority);
+    for (const p of list) {
+        for (const k of p.kw) {
+            if (text.includes(k)) return p;
+        }
+    }
+    return null;
+}
+
+function detectItem(text, plate) {
+    if (!plate || !plate.items) return null;
+    for (const it of plate.items) {
+        for (const kw of it.kw) {
+            if (text.includes(kw)) return it.name;
+        }
+    }
+    return null;
+}
+
+function detectFloorOwner(text, plate) {
+    if (!plate || !plate.floorOwnerMap) return plate.defOwner || "";
+    for (const fm of plate.floorOwnerMap) {
+        for (const fkw of fm.floorKw) {
+            if (text.includes(fkw)) {
+                return fm.owner;
+            }
+        }
+    }
+    return plate.defOwner || "";
+}
+
+function openPreview() {
+    const text = document.getElementById("inputText").value.trim();
+    if (!text) {
+        alert("请粘贴问题");
+        return;
+    }
+    const lines = text.split(/\r?\n/).filter(x => x.trim());
+    previewTempList = [];
+    const now = new Date();
+    const timeStr = (now.getMonth() + 1) + "." + now.getDate();
+    for (const line of lines) {
+        const t = line.trim();
+        const plateObj = detectPlate(t);
+        const plateName = plateObj ? plateObj.name : "";
+        const itemName = plateObj ? detectItem(t, plateObj) : "";
+        const owner = plateObj ? detectFloorOwner(t, plateObj) : "";
+        previewTempList.push({
+            time: timeStr,
+            plate: plateName,
+            item: itemName,
+            desc: t,
+            owner: owner
+        });
+    }
+    renderPreviewTable();
+    document.getElementById("previewMask").style.display = "flex";
+}
+
+function closePreviewMask() {
+    document.getElementById("previewMask").style.display = "none";
+    previewTempList = [];
+}
+
+function renderPreviewTable() {
+    const tbody = document.getElementById("previewBody");
+    tbody.innerHTML = "";
+    previewTempList.forEach((row, idx) => {
+        const tr = document.createElement("tr");
+        tr.style.animation = "tableIn 0.4s ease-out";
+        tr.innerHTML = `
+            <td><input type="text" data-pidx="${idx}" class="pre-time" value="${escapeHtml(row.time)}" style="width:74px;"></td>
+            <td><select data-pidx="${idx}" class="pre-plate" onchange="previewPlateChange(${idx})"></select></td>
+            <td><select data-pidx="${idx}" class="pre-item"></select></td>
+            <td><textarea data-pidx="${idx}" class="pre-desc" rows="2">${escapeHtml(row.desc)}</textarea></td>
+            <td><select data-pidx="${idx}" class="pre-owner"></select></td>
+            <td><button class="btn-mini danger" onclick="delPreviewRow(${idx})">删除</button></td>
+        `;
+        tbody.appendChild(tr);
+        fillPreviewSelect(idx, row.plate, row.item, row.owner);
+    });
+}
+
+function fillPreviewSelect(pidx, selPlateName, selItemName, selOwnerName) {
+    const plateSel = document.querySelector(`.pre-plate[data-pidx="${pidx}"]`);
+    plateSel.innerHTML = `<option value="">--选择板块--</option>`;
+    cfg.plates.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.innerText = p.name;
+        if (p.name === selPlateName) opt.selected = true;
+        plateSel.appendChild(opt);
+    });
+    previewPlateChange(pidx, selPlateName, selItemName, selOwnerName);
+}
+
+function previewPlateChange(pidx, initPlateName, initItemName, initOwnerName) {
+    const plateSel = document.querySelector(`.pre-plate[data-pidx="${pidx}"]`);
+    const plateName = initPlateName || plateSel.value;
+    const plateObj = cfg.plates.find(p => p.name === plateName);
+    const itemSel = document.querySelector(`.pre-item[data-pidx="${pidx}"]`);
+    const ownerSel = document.querySelector(`.pre-owner[data-pidx="${pidx}"]`);
+    itemSel.innerHTML = `<option value="">--选择重点项--</option>`;
+    ownerSel.innerHTML = `<option value="">--选择负责人--</option>`;
+    if (plateObj) {
+        plateObj.items.forEach(it => {
+            const opt = document.createElement("option");
+            opt.value = it.name;
+            opt.innerText = it.name;
+            itemSel.appendChild(opt);
+        });
+        plateObj.owners.forEach(o => {
+            const opt = document.createElement("option");
+            opt.value = o;
+            opt.innerText = o;
+            ownerSel.appendChild(opt);
+        });
+        if (initItemName) itemSel.value = initItemName;
+        if (initOwnerName) ownerSel.value = initOwnerName;
+        else ownerSel.value = plateObj.defOwner;
+        previewTempList[pidx].plate = plateName;
+        previewTempList[pidx].item = itemSel.value;
+        previewTempList[pidx].owner = ownerSel.value;
+    } else {
+        previewTempList[pidx].plate = plateName;
+        previewTempList[pidx].item = "";
+        previewTempList[pidx].owner = "";
+    }
+}
+
+function delPreviewRow(idx) {
+    previewTempList.splice(idx, 1);
+    renderPreviewTable();
+}
+
+function confirmPreviewAdd() {
+    document.querySelectorAll("#previewBody tr").forEach((tr, i) => {
+        previewTempList[i].time = tr.querySelector(".pre-time").value.trim();
+        previewTempList[i].plate = tr.querySelector(".pre-plate").value;
+        previewTempList[i].item = tr.querySelector(".pre-item").value;
+        previewTempList[i].desc = tr.querySelector(".pre-desc").value.trim();
+        previewTempList[i].owner = tr.querySelector(".pre-owner").value;
+    });
+    recordList.push(...previewTempList);
+    saveRecLocal();
+    renderTable();
+    alert("已添加 " + previewTempList.length + " 条记录");
+    closePreviewMask();
+    document.getElementById("inputText").value = "";
+}
+
+function renderTable() {
+    const tbody = document.getElementById("tableBody");
+    tbody.innerHTML = "";
+    const sVal = (document.getElementById("searchVal").value || "").toLowerCase();
+    const list = recordList.filter(r => {
+        return (
+            r.desc.toLowerCase().includes(sVal) ||
+            r.plate.toLowerCase().includes(sVal) ||
+            r.owner.toLowerCase().includes(sVal)
+        );
+    });
+    list.forEach((r, idx) => {
+        const realIdx = recordList.indexOf(r);
+        const tr = document.createElement("tr");
+        tr.style.animation = "tableIn 0.45s ease-out";
+        tr.innerHTML = `
+            <td>${realIdx + 1}</td>
+            <td>${escapeHtml(r.time)}</td>
+            <td>${escapeHtml(r.plate)}</td>
+            <td>${escapeHtml(r.item)}</td>
+            <td class="left">${escapeHtml(r.desc)}</td>
+            <td>${escapeHtml(r.owner)}</td>
+            <td>
+                <button class="btn-mini" onclick="openEdit(${realIdx})">编辑</button>
+                <button class="btn-mini danger" onclick="delRec(${realIdx})">删除</button>
+            </td>
+        `;
+        tbody.appendChild(tr);
+    });
+}
+
+function escapeHtml(s) {
+    if (!s) return "";
+    return String(s)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+function openEdit(idx) {
+    editIdx = idx;
+    const r = recordList[idx];
+    document.getElementById("eTime").value = r.time || "";
+    document.getElementById("eDesc").value = r.desc || "";
+    fillEditPlateSelect(r.plate, r.item, r.owner);
+    document.getElementById("editMask").style.display = "flex";
+}
+
+function closeEditMask() {
+    document.getElementById("editMask").style.display = "none";
+    editIdx = null;
+}
+
+function fillEditPlateSelect(selectedPlateName, selItemName, selOwnerName) {
+    const sel = document.getElementById("ePlate");
+    sel.innerHTML = `<option value="">--选择板块--</option>`;
+    cfg.plates.forEach(p => {
+        const opt = document.createElement("option");
+        opt.value = p.name;
+        opt.innerText = p.name;
+        if (p.name === selectedPlateName) opt.selected = true;
+        sel.appendChild(opt);
+    });
+    editPlateChange(selItemName, selOwnerName);
+}
+
+function editPlateChange(initItemName, initOwnerName) {
+    const plateSel = document.getElementById("ePlate");
+    const plateName = plateSel.value;
+    const plateObj = cfg.plates.find(p => p.name === plateName);
+    const itemSel = document.getElementById("eItem");
+    const ownerSel = document.getElementById("eOwner");
+    itemSel.innerHTML = `<option value="">--选择重点项--</option>`;
+    ownerSel.innerHTML = `<option value="">--选择负责人--</option>`;
+    if (plateObj) {
+        plateObj.items.forEach(it => {
+            const opt = document.createElement("option");
+            opt.value = it.name;
+            opt.innerText = it.name;
+            itemSel.appendChild(opt);
+        });
+        plateObj.owners.forEach(o => {
+            const opt = document.createElement("option");
+            opt.value = o;
+            opt.innerText = o;
+            ownerSel.appendChild(opt);
+        });
+        if (initItemName) itemSel.value = initItemName;
+        if (initOwnerName) ownerSel.value = initOwnerName;
+        else ownerSel.value = plateObj.defOwner;
+    }
+}
+
+function saveEdit() {
+    const r = recordList[editIdx];
+    r.time = document.getElementById("eTime").value.trim();
+    r.plate = document.getElementById("ePlate").value;
+    r.item = document.getElementById("eItem").value;
+    r.desc = document.getElementById("eDesc").value.trim();
+    r.owner = document.getElementById("eOwner").value;
+    saveRecLocal();
+    renderTable();
+    closeEditMask();
+    alert("保存成功");
+}
+
+function delRec(idx) {
+    if (!confirm("确定删除？")) return;
+    recordList.splice(idx, 1);
+    saveRecLocal();
+    renderTable();
+}
+
+function exportXlsx() {
+    if (!recordList.length) {
+        alert("暂无记录");
+        return;
+    }
+    try {
+        const data = [["序号", "时间", "问题板块", "问题重点项", "问题描述", "负责人"]];
+        recordList.forEach((r, i) => {
+            data.push([i + 1, r.time, r.plate, r.item, r.desc, r.owner]);
+        });
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "每日巡查问题月度汇总");
+        const dateStr = new Date().toLocaleDateString().replace(/\//g, "-");
+        XLSX.writeFile(wb, "每日巡查问题月度汇总_" + dateStr + ".xlsx");
+
+        // 记录导出时间
+        const nowStr = new Date().toLocaleString();
+        localStorage.setItem(LAST_EXPORT_TIME_KEY, nowStr);
+        document.getElementById("lastExportTip").innerText = "上次导出：" + nowStr;
+
+    } catch (err) {
+        alert("导出失败：" + err.message);
+        console.error(err);
+    }
+}
+
+// 追加功能保留代码，界面无按钮
+document.getElementById("fileAppend").addEventListener("change", async function (e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+        const buf = await f.arrayBuffer();
+        const wbOld = XLSX.read(buf);
+        const sheet = wbOld.Sheets[wbOld.SheetNames[0]];
+        const rows = recordList.map((r, i) => [i + 1, r.time, r.plate, r.item, r.desc, r.owner]);
+        XLSX.utils.sheet_add_aoa(sheet, rows, { origin: -1 });
+        const dateStr = new Date().toLocaleDateString().replace(/\//g, "-");
+        XLSX.writeFile(wbOld, "台账_追加完成_" + dateStr + ".xlsx");
+        alert("追加完成，已下载合并台账");
+    } catch (err) {
+        alert("追加导出失败：" + err.message);
+        console.error(err);
+    }
+    e.target.value = "";
+});
+
+document.getElementById("fileImport").addEventListener("change", async function (e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    try {
+        const buf = await f.arrayBuffer();
+        const wb = XLSX.read(buf);
+        const sheet = wb.Sheets[wb.SheetNames[0]];
+        const json = XLSX.utils.sheet_to_json(sheet);
+        const temp = json.map(row => ({
+            time: row["时间"] || "",
+            plate: row["问题板块"] || "",
+            item: row["问题重点项"] || "",
+            desc: row["问题描述"] || "",
+            owner: row["负责人"] || ""
+        }));
+        if (confirm("读取 " + temp.length + " 条，是否覆盖现有台账？")) {
+            recordList = temp;
+            saveRecLocal();
+            renderTable();
+            alert("导入台账成功");
+        }
+    } catch (err) {
+        alert("读取文件失败：" + err.message);
+        console.error(err);
+    }
+    e.target.value = "";
+});
+
+function renderCfgPanel() {
+    let plateHtml = "";
+    cfg.plates.forEach((p, pidx) => {
+        const innerItemHtml = p.items.map(it => `<span class="tag">${it.name}</span>`).join("  ");
+        const floorMapHtml = p.floorOwnerMap && p.floorOwnerMap.length
+            ? p.floorOwnerMap.map(fm => `<span class="tag">${fm.floorKw.join(",")} → ${fm.owner}</span>`).join("  ")
+            : `<span style="font-weight:800;">无</span>`;
+        plateHtml += `
+            <div class="cfg-block">
+                <div style="display:flex;justify-content:space-between;align-items:center;">
+                    <div style="font-weight:800;letter-spacing:1px;">${escapeHtml(p.name)}</div>
+                    <div style="display:flex;gap:8px;">
+                        <button class="btn-mini" onclick="openEditPlate(${pidx})">编辑板块</button>
+                        <button class="btn-mini danger" onclick="delPlate(${pidx})">删除板块</button>
+                    </div>
+                </div>
+                <div class="row-line"></div>
+                <div style="font-size:13px;">关键词：${p.kw.join(",")}</div>
+                <div style="font-size:13px;">优先级：${p.priority}</div>
+                <div style="font-size:13px;margin-top:6px;">重点项：${innerItemHtml || "无"}</div>
+                <div style="font-size:13px;margin-top:6px;">楼层映射：${floorMapHtml}</div>
+                <div style="font-size:13px;">负责人列表：${p.owners.join(",")}</div>
+                <div style="font-size:13px;">默认负责人：${p.defOwner}</div>
+            </div>
+        `;
+    });
+    document.getElementById("plateListWrap").innerHTML = plateHtml;
+}
+
+function addPlate() {
+    const name = document.getElementById("newPlateName").value.trim();
+    const kwStr = document.getElementById("newPlateKw").value.trim();
+    const pri = Number(document.getElementById("newPlatePri").value);
+    const ownerStr = document.getElementById("newPlateOwners").value.trim();
+    const defOwner = document.getElementById("newPlateDefOwner").value.trim();
+    if (!name) {
+        alert("填写板块名称");
+        return;
+    }
+    const kw = kwStr.split(",").map(x => x.trim()).filter(x => x);
+    const owners = ownerStr.split(",").map(x => x.trim()).filter(x => x);
+    cfg.plates.push({
+        name,
+        kw,
+        priority: pri,
+        items: [],
+        owners,
+        defOwner,
+        floorOwnerMap: []
+    });
+    saveCfgLocal();
+    renderCfgPanel();
+    document.getElementById("newPlateName").value = "";
+    document.getElementById("newPlateKw").value = "";
+    document.getElementById("newPlatePri").value = 10;
+    document.getElementById("newPlateOwners").value = "";
+    document.getElementById("newPlateDefOwner").value = "";
+}
+
+function openEditPlate(pidx) {
+    currentEditPlateIdx = pidx;
+    const p = cfg.plates[pidx];
+    document.getElementById("epName").value = p.name;
+    document.getElementById("epKw").value = p.kw.join(",");
+    document.getElementById("epPri").value = p.priority;
+    document.getElementById("epOwners").value = p.owners.join(",");
+    document.getElementById("epDefOwner").value = p.defOwner;
+    renderEditPlateItemList();
+    renderEditPlateFloorList();
+    document.getElementById("editPlateMask").style.display = "flex";
+}
+
+function closeEditPlateMask() {
+    document.getElementById("editPlateMask").style.display = "none";
+    currentEditPlateIdx = null;
+}
+
+function renderEditPlateItemList() {
+    const p = cfg.plates[currentEditPlateIdx];
+    let html = "";
+    p.items.forEach((it, i) => {
+        html += `
+            <div class="sub-item">
+                <input type="text" id="itName_${i}" value="${escapeHtml(it.name)}" placeholder="重点项名称" style="flex:1;">
+                <input type="text" id="itKw_${i}" value="${escapeHtml(it.kw.join(","))}" placeholder="关键词逗号分隔" style="flex:2;">
+                <button class="btn-mini danger" onclick="delPlateInnerItem(${i})">删</button>
+            </div>
+        `;
+    });
+    document.getElementById("epItemWrap").innerHTML = html;
+}
+
+function addPlateInnerItem() {
+    const p = cfg.plates[currentEditPlateIdx];
+    const iname = document.getElementById("epNewItemName").value.trim();
+    const ikwStr = document.getElementById("epNewItemKw").value.trim();
+    if (!iname) {
+        alert("填写重点项名称");
+        return;
+    }
+    const ikw = ikwStr.split(",").map(x => x.trim()).filter(x => x);
+    p.items.push({ name: iname, kw: ikw });
+    renderEditPlateItemList();
+    document.getElementById("epNewItemName").value = "";
+    document.getElementById("epNewItemKw").value = "";
+}
+
+function delPlateInnerItem(iIdx) {
+    const p = cfg.plates[currentEditPlateIdx];
+    if (!confirm("删除该板块内重点项？")) return;
+    p.items.splice(iIdx, 1);
+    renderEditPlateItemList();
+}
+
+function renderEditPlateFloorList() {
+    const p = cfg.plates[currentEditPlateIdx];
+    let html = "";
+    p.floorOwnerMap.forEach((fm, i) => {
+        html += `
+            <div class="sub-item">
+                <input type="text" id="fmKw_${i}" value="${escapeHtml(fm.floorKw.join(","))}" placeholder="楼层关键字逗号分隔" style="flex:1;">
+                <input type="text" id="fmOwner_${i}" value="${escapeHtml(fm.owner)}" placeholder="负责人" style="flex:1;">
+                <button class="btn-mini danger" onclick="delPlateFloorMap(${i})">删</button>
+            </div>
+        `;
+    });
+    document.getElementById("epFloorOwnerWrap").innerHTML = html;
+}
+
+function addPlateFloorMap() {
+    const p = cfg.plates[currentEditPlateIdx];
+    const fKwStr = document.getElementById("epNewFloorKw").value.trim();
+    const fOwner = document.getElementById("epNewFloorOwner").value.trim();
+    if (!fKwStr || !fOwner) {
+        alert("填写楼层关键字和负责人");
+        return;
+    }
+    const fKw = fKwStr.split(",").map(x => x.trim()).filter(x => x);
+    p.floorOwnerMap.push({ floorKw: fKw, owner: fOwner });
+    renderEditPlateFloorList();
+    document.getElementById("epNewFloorKw").value = "";
+    document.getElementById("epNewFloorOwner").value = "";
+}
+
+function delPlateFloorMap(iIdx) {
+    const p = cfg.plates[currentEditPlateIdx];
+    if (!confirm("删除这条楼层负责人映射？")) return;
+    p.floorOwnerMap.splice(iIdx, 1);
+    renderEditPlateFloorList();
+}
+
+function saveEditPlate() {
+    const p = cfg.plates[currentEditPlateIdx];
+    p.name = document.getElementById("epName").value.trim();
+    p.kw = document.getElementById("epKw").value.split(",").map(x => x.trim()).filter(x => x);
+    p.priority = Number(document.getElementById("epPri").value);
+    p.owners = document.getElementById("epOwners").value.split(",").map(x => x.trim()).filter(x => x);
+    p.defOwner = document.getElementById("epDefOwner").value.trim();
+    const pItem = cfg.plates[currentEditPlateIdx].items;
+    for (let i = 0; i < pItem.length; i++) {
+        const nVal = document.getElementById("itName_" + i).value.trim();
+        const kwVal = document.getElementById("itKw_" + i).value.trim();
+        pItem[i].name = nVal;
+        pItem[i].kw = kwVal.split(",").map(x => x.trim()).filter(x => x);
+    }
+    const pFloor = cfg.plates[currentEditPlateIdx].floorOwnerMap;
+    for (let i = 0; i < pFloor.length; i++) {
+        const kwVal = document.getElementById("fmKw_" + i).value.trim();
+        const ownVal = document.getElementById("fmOwner_" + i).value.trim();
+        pFloor[i].floorKw = kwVal.split(",").map(x => x.trim()).filter(x => x);
+        pFloor[i].owner = ownVal;
+    }
+    saveCfgLocal();
+    renderCfgPanel();
+    closeEditPlateMask();
+    alert("板块保存成功");
+}
+
+function delPlate(idx) {
+    if (!confirm("删除板块？")) return;
+    cfg.plates.splice(idx, 1);
+    saveCfgLocal();
+    renderCfgPanel();
+}
+
+function exportCfg() {
+    const blob = new Blob([JSON.stringify(cfg, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "台账配置.json";
+    a.click();
+    URL.revokeObjectURL(url);
+}
+
+document.getElementById("cfgImport").addEventListener("change", async function (e) {
+    const f = e.target.files[0];
+    if (!f) return;
+    const txt = await f.text();
+    try {
+        const newCfg = JSON.parse(txt);
+        if (confirm("导入配置将覆盖当前配置，确认？")) {
+            cfg = newCfg;
+            saveCfgLocal();
+            renderCfgPanel();
+            alert("配置导入成功");
+        }
+    } catch (err) {
+        alert("配置文件解析失败");
+    }
+    e.target.value = "";
+});
+
+function clearAll() {
+    if (!confirm("清空全部台账记录？配置不会清空")) return;
+    recordList = [];
+    saveRecLocal();
+    renderTable();
+}
+
+init();
+</script>
+</body>
+</html>
